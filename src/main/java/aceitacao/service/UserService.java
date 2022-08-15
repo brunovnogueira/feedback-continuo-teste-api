@@ -2,6 +2,10 @@ package aceitacao.service;
 
 import aceitacao.dto.UserDTO;
 import io.restassured.http.ContentType;
+import io.restassured.response.Response;
+import io.restassured.response.ValidatableResponse;
+import org.apache.http.HttpStatus;
+
 import java.util.Random;
 
 import static io.restassured.RestAssured.given;
@@ -27,6 +31,20 @@ public class UserService {
                 .extract().as(UserDTO.class)
         ;
         return res;
+    }
+
+    public ValidatableResponse createBadRequest(String jsonBody){
+        String url = baseUrl+"users/create";
+         ValidatableResponse response = given()
+                .contentType(ContentType.JSON)
+                .log().all()
+                .body(jsonBody)
+        .when()
+                .post(url)
+        .then()
+                .log().all()
+        ;
+         return response;
     }
 
     public UserDTO listar(){
