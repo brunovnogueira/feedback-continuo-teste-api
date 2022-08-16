@@ -136,7 +136,7 @@ public class UserAceitacao {
         int randomIndex = random.nextInt(arrayRoles.length);
         jsonObject.put("userRole", arrayRoles[randomIndex]);
         jsonObject.put("email", faker.name().firstName().toLowerCase() + "@email.com.br");
-        jsonObject.put("userPassword", faker.internet().password(4, 16, true, true));
+        jsonObject.put("userPassword", faker.internet().password(4, 16, true, true)+"#");
 
         ValidatableResponse res = userService.createBadRequest(jsonObject.toString());
 
@@ -165,5 +165,58 @@ public class UserAceitacao {
 
         //Validações
         res.statusCode(HttpStatus.SC_BAD_REQUEST);
+    }
+
+    @Test
+    public void fileUpdate() throws IOException {
+        UserDTO user = createUserFunction();
+
+        ValidatableResponse res = userService.updateFile(user.getIdUser());
+
+        //Validações
+        res.statusCode(HttpStatus.SC_OK);
+    }
+
+//    @Test
+//    public void fileUpdateEmpty() throws IOException {
+//        UserDTO user = createUserFunction();
+//
+//        ValidatableResponse res = userService.updateFileEmpty(user.getIdUser());
+//
+//        //Validações
+//        res.statusCode(HttpStatus.SC_OK);
+//    }
+
+    @Test
+    public void fileUpdateTexto() throws IOException {
+        UserDTO user = createUserFunction();
+
+        ValidatableResponse res = userService.updateFileTxt(user.getIdUser());
+
+        //Validações
+        res.statusCode(HttpStatus.SC_BAD_REQUEST);
+        //TODO: NÃO DEVERIA ACEITAR ARQUIVOS QUE NÃO SÃO PNG
+    }
+
+    /*UTILS-------------------------------------------------------------------------------------------------------------*/
+    public UserDTO createUserFunction() throws IOException {
+        //Array de cargos
+        String[] arrayRoles = {"AGILE_COACH", "ANALISTA_DE_DADOS", "ANALISTA_DE_RH", "ANALISTA_DE_TESTES", "ANALISTA_DE_SUPORTE",
+                "ARQUITETO_DE_SISTEMAS", "ASSISTENTE_COMERCIAL", "COORDENADOR_DE_DEPARTAMENTO_PESSOAL", "DESENVOLVEDOR_DE_SOFTWARE",
+                "ENGENHEIRO_DE_DADOS", "ENGENHEIRO_DE_SOFTWARE", "GERENTE_DE_PROJETOS", "LIDER_TECNICO", "UX_DESIGNER", "GERENTE_DE_SOLUCOES"};
+
+        //Criando um objeto json
+        String jsonBody = lerJson("src/test/resources/user.json");
+        JSONObject jsonObject = new JSONObject(jsonBody);
+
+        //Definindo as values do json
+        jsonObject.put("userNamer", faker.name().fullName());
+        int randomIndex = random.nextInt(arrayRoles.length);
+        jsonObject.put("userRole", arrayRoles[randomIndex]);
+        jsonObject.put("email", faker.name().firstName().toLowerCase() + "@dbccompany.com.br");
+        jsonObject.put("userPassword", faker.internet().password(4, 16, true, true)+"#");
+
+        UserDTO res = userService.create(jsonObject.toString());
+        return res;
     }
 }

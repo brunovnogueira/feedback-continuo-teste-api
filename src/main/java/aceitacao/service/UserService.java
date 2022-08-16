@@ -2,10 +2,9 @@ package aceitacao.service;
 
 import aceitacao.dto.UserDTO;
 import io.restassured.http.ContentType;
-import io.restassured.response.Response;
+import io.restassured.http.Header;
 import io.restassured.response.ValidatableResponse;
-import org.apache.http.HttpStatus;
-
+import java.io.File;
 import java.util.Random;
 
 import static io.restassured.RestAssured.given;
@@ -17,6 +16,7 @@ public class UserService {
 
     String token = ""; //TODO: Substituir
 
+    /*CREATE-------------------------------------------------------------------------------------------------------*/
     public UserDTO create(String jsonBody){
         String url = baseUrl+"users/create";
         UserDTO res = given()
@@ -46,6 +46,52 @@ public class UserService {
         ;
          return response;
     }
+
+    /*FILE UPDATE-------------------------------------------------------------------------------------------------------*/
+    public ValidatableResponse updateFile(String id){
+        String url = baseUrl+"users/update-file";
+        ValidatableResponse res = given()
+                .header(new Header("content-type", "multipart/form-data"))
+                .multiPart(new File("src/test/resources/images.png"))
+                .log().all()
+                .formParam("id",id)
+        .when()
+                .put(url)
+        .then()
+                .log().all();
+
+        return res;
+    }
+
+    public ValidatableResponse updateFileTxt(String id){
+        String url = baseUrl+"users/update-file";
+        ValidatableResponse res = given()
+                .header(new Header("content-type", "multipart/form-data"))
+                .multiPart(new File("src/test/resources/texto.txt"))
+                .log().all()
+                .formParam("id",id)
+        .when()
+                .put(url)
+        .then()
+                .log().all();
+
+        return res;
+    }
+
+    public ValidatableResponse updateFileEmpty(String id){
+        String url = baseUrl+"users/update-file";
+        ValidatableResponse res = given()
+                .header(new Header("content-type", "multipart/form-data"))
+                .log().all()
+                .param("id",id)
+        .when()
+                .put(url)
+        .then()
+                .log().all();
+
+        return res;
+    }
+
 
     public UserDTO listar(){
         return new UserDTO();
