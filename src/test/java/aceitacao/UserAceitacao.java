@@ -25,6 +25,7 @@ public class UserAceitacao {
     Faker faker = new Faker();
     UserService userService = new UserService();
 
+    /* Endpoint: /users/create */
     @Test
     public void create() throws IOException {
         //Array de cargos
@@ -46,15 +47,7 @@ public class UserAceitacao {
         UserDTO res = userService.create(jsonObject.toString());
 
         //Validações
-        Assert.assertEquals(res.getUserNamer(), jsonObject.get("userNamer"));
-
-        if (Objects.equals(res.getUserRole(), "Gerente de Soluções")) {
-            Assert.assertEquals(res.getUserRole().toLowerCase(), "gerente de soluções");
-        } else if (Objects.equals(res.getUserRole(), "Lider Técnico")) {
-            Assert.assertEquals(res.getUserRole().toLowerCase(), "lider técnico");
-        } else {
-            Assert.assertEquals(res.getUserRole().toLowerCase(), jsonObject.get("userRole").toString().replace("_", " ").toLowerCase());
-        }
+        Assert.assertFalse(res.getIdUser().isEmpty());
     }
 
     @Test
@@ -167,6 +160,7 @@ public class UserAceitacao {
         res.statusCode(HttpStatus.SC_BAD_REQUEST);
     }
 
+    /* Endpoint: /users/update-file */
     @Test
     public void fileUpdate() throws IOException {
         UserDTO user = createUserFunction();
@@ -198,6 +192,65 @@ public class UserAceitacao {
         //TODO: NÃO DEVERIA ACEITAR ARQUIVOS QUE NÃO SÃO PNG
     }
 
+    /* Endpoint: /users/login */
+    @Test
+    public void userLogin() throws IOException {
+        //Criando um objeto json
+        String jsonBody = lerJson("src/test/resources/login.json");
+        JSONObject jsonObject = new JSONObject(jsonBody);
+
+        createUserDefault();
+
+        //Definindo as values do json
+        jsonObject.put("login", "teste1@dbccompany.com.br");
+        jsonObject.put("senha", "1234@a");
+
+        ValidatableResponse res = userService.userLogin(jsonObject.toString());
+
+        //Validações
+        res.statusCode(HttpStatus.SC_OK);
+
+    }
+
+    @Test
+    public void userLoginEmailIncorreto() throws IOException {
+        //Criando um objeto json
+        String jsonBody = lerJson("src/test/resources/login.json");
+        JSONObject jsonObject = new JSONObject(jsonBody);
+
+        //createUserDefault();
+
+        //Definindo as values do json
+        jsonObject.put("login", "teste134@dbccompany.com.br");
+        jsonObject.put("senha", "1234@a");
+
+        ValidatableResponse res = userService.userLogin(jsonObject.toString());
+
+        //Validações
+        res.statusCode(HttpStatus.SC_INTERNAL_SERVER_ERROR);
+
+    }
+
+    @Test
+    public void userLoginSenhaIncorreto() throws IOException {
+        //Criando um objeto json
+        String jsonBody = lerJson("src/test/resources/login.json");
+        JSONObject jsonObject = new JSONObject(jsonBody);
+
+        //createUserDefault();
+
+        //Definindo as values do json
+        jsonObject.put("login", "testeLogin@dbccompany.com.br");
+        jsonObject.put("senha", "1234@b");
+
+        ValidatableResponse res = userService.userLogin(jsonObject.toString());
+
+        //Validações
+        res.statusCode(HttpStatus.SC_INTERNAL_SERVER_ERROR);
+
+    }
+
+
     /*UTILS-------------------------------------------------------------------------------------------------------------*/
     public UserDTO createUserFunction() throws IOException {
         //Array de cargos
@@ -215,6 +268,27 @@ public class UserAceitacao {
         jsonObject.put("userRole", arrayRoles[randomIndex]);
         jsonObject.put("email", faker.name().firstName().toLowerCase() + "@dbccompany.com.br");
         jsonObject.put("userPassword", faker.internet().password(4, 16, true, true)+"#");
+
+        UserDTO res = userService.create(jsonObject.toString());
+        return res;
+    }
+
+    public UserDTO createUserDefault() throws IOException {
+        //Array de cargos
+        String[] arrayRoles = {"AGILE_COACH", "ANALISTA_DE_DADOS", "ANALISTA_DE_RH", "ANALISTA_DE_TESTES", "ANALISTA_DE_SUPORTE",
+                "ARQUITETO_DE_SISTEMAS", "ASSISTENTE_COMERCIAL", "COORDENADOR_DE_DEPARTAMENTO_PESSOAL", "DESENVOLVEDOR_DE_SOFTWARE",
+                "ENGENHEIRO_DE_DADOS", "ENGENHEIRO_DE_SOFTWARE", "GERENTE_DE_PROJETOS", "LIDER_TECNICO", "UX_DESIGNER", "GERENTE_DE_SOLUCOES"};
+
+        //Criando um objeto json
+        String jsonBody = lerJson("src/test/resources/user.json");
+        JSONObject jsonObject = new JSONObject(jsonBody);
+
+        //Definindo as values do json
+        jsonObject.put("userNamer", faker.name().fullName());
+        int randomIndex = random.nextInt(arrayRoles.length);
+        jsonObject.put("userRole", arrayRoles[randomIndex]);
+        jsonObject.put("email", "testeLogin@dbccompany.com.br");
+        jsonObject.put("userPassword", "1234@a");
 
         UserDTO res = userService.create(jsonObject.toString());
         return res;

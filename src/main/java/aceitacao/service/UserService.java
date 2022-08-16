@@ -83,7 +83,7 @@ public class UserService {
         ValidatableResponse res = given()
                 .header(new Header("content-type", "multipart/form-data"))
                 .log().all()
-                .param("id",id)
+                .formParam("id",id)
         .when()
                 .put(url)
         .then()
@@ -92,16 +92,18 @@ public class UserService {
         return res;
     }
 
+    public ValidatableResponse userLogin(String jsonBody){
+        String url = baseUrl+"users/login";
+        ValidatableResponse res = given()
+                .contentType(ContentType.JSON)
+                .log().all()
+                .body(jsonBody)
+                .when()
+                .post(url)
+                .then()
+                .log().all()
+                ;
 
-    public UserDTO listar(){
-        return new UserDTO();
-    }
-
-    public UserDTO atualizar(){
-        return new UserDTO();
-    }
-
-    public void deletar(){
-
+        return res;
     }
 }
