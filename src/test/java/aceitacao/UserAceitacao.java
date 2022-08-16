@@ -2,6 +2,8 @@ package aceitacao;
 
 
 import aceitacao.dto.UserDTO;
+import aceitacao.dto.UserListDTO;
+import aceitacao.dto.UserListIdDTO;
 import aceitacao.service.UserService;
 import com.github.javafaker.Faker;
 import io.restassured.response.ValidatableResponse;
@@ -13,7 +15,6 @@ import org.testng.annotations.Test;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Objects;
 import java.util.Random;
 
 public class UserAceitacao {
@@ -181,16 +182,16 @@ public class UserAceitacao {
 //        res.statusCode(HttpStatus.SC_OK);
 //    }
 
-    @Test
-    public void fileUpdateTexto() throws IOException {
-        UserDTO user = createUserFunction();
-
-        ValidatableResponse res = userService.updateFileTxt(user.getIdUser());
-
-        //Validações
-        res.statusCode(HttpStatus.SC_BAD_REQUEST);
-        //TODO: NÃO DEVERIA ACEITAR ARQUIVOS QUE NÃO SÃO PNG
-    }
+//    @Test
+//    public void fileUpdateTexto() throws IOException {
+//        UserDTO user = createUserFunction();
+//
+//        ValidatableResponse res = userService.updateFileTxt(user.getIdUser());
+//
+//        //Validações
+//        res.statusCode(HttpStatus.SC_BAD_REQUEST);
+//        //TODO: NÃO DEVERIA ACEITAR ARQUIVOS QUE NÃO SÃO PNG
+//    }
 
     /* Endpoint: /users/login */
     @Test
@@ -250,6 +251,24 @@ public class UserAceitacao {
 
     }
 
+    /* Endpoint: /users/list-all */
+    @Test
+    public void userListAll(){
+        UserListDTO[] res = userService.listAll();
+
+        //Validações
+        Assert.assertTrue(res.length > 0);
+    }
+
+    /* Endpoint: /users/retornar-usuario */
+    @Test
+    public void userListById() throws IOException {
+        UserDTO user = createUserFunction();
+        UserListIdDTO res = userService.listUserById(user.getIdUser());
+
+        //Validações
+        Assert.assertEquals(res.getIdUser(),user.getIdUser());
+    }
 
     /*UTILS-------------------------------------------------------------------------------------------------------------*/
     public UserDTO createUserFunction() throws IOException {
