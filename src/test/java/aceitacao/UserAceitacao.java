@@ -26,7 +26,7 @@ public class UserAceitacao {
     Faker faker = new Faker();
     UserService userService = new UserService();
 
-    /* Endpoint: /users/create */
+    /* Endpoint: /users/create --------------------------------------------------------------------------------- */
     @Test
     public void create() throws IOException {
         //Array de cargos
@@ -39,11 +39,11 @@ public class UserAceitacao {
         JSONObject jsonObject = new JSONObject(jsonBody);
 
         //Definindo as values do json
-        jsonObject.put("userNamer", faker.name().fullName());
+        jsonObject.put("userName", faker.name().fullName());
         int randomIndex = random.nextInt(arrayRoles.length);
         jsonObject.put("userRole", arrayRoles[randomIndex]);
         jsonObject.put("email", faker.name().firstName().toLowerCase() + "@dbccompany.com.br");
-        jsonObject.put("userPassword", faker.internet().password(4, 16, true, true));
+        jsonObject.put("userPassword", faker.internet().password(4, 16, true, true)+"#");
 
         UserDTO res = userService.create(jsonObject.toString());
 
@@ -161,7 +161,7 @@ public class UserAceitacao {
         res.statusCode(HttpStatus.SC_BAD_REQUEST);
     }
 
-    /* Endpoint: /users/update-file */
+    /* Endpoint: /users/update-file --------------------------------------------------------------------------------- */
     @Test
     public void fileUpdate() throws IOException {
         UserDTO user = createUserFunction();
@@ -172,28 +172,17 @@ public class UserAceitacao {
         res.statusCode(HttpStatus.SC_OK);
     }
 
-//    @Test
-//    public void fileUpdateEmpty() throws IOException {
-//        UserDTO user = createUserFunction();
-//
-//        ValidatableResponse res = userService.updateFileEmpty(user.getIdUser());
-//
-//        //Validações
-//        res.statusCode(HttpStatus.SC_OK);
-//    }
+    @Test
+    public void fileUpdateEmpty() throws IOException {
+        UserDTO user = createUserFunction();
 
-//    @Test
-//    public void fileUpdateTexto() throws IOException {
-//        UserDTO user = createUserFunction();
-//
-//        ValidatableResponse res = userService.updateFileTxt(user.getIdUser());
-//
-//        //Validações
-//        res.statusCode(HttpStatus.SC_BAD_REQUEST);
-//        //TODO: NÃO DEVERIA ACEITAR ARQUIVOS QUE NÃO SÃO PNG
-//    }
+        ValidatableResponse res = userService.updateFileEmpty(user.getIdUser());
 
-    /* Endpoint: /users/login */
+        //Validações
+        res.statusCode(HttpStatus.SC_OK);
+    }
+
+    /* Endpoint: /users/login --------------------------------------------------------------------------------- */
     @Test
     public void userLogin() throws IOException {
         //Criando um objeto json
@@ -251,7 +240,7 @@ public class UserAceitacao {
 
     }
 
-    /* Endpoint: /users/list-all */
+    /* Endpoint: /users/list-all --------------------------------------------------------------------------------- */
     @Test
     public void userListAll(){
         UserListDTO[] res = userService.listAll();
@@ -260,7 +249,7 @@ public class UserAceitacao {
         Assert.assertTrue(res.length > 0);
     }
 
-    /* Endpoint: /users/retornar-usuario */
+    /* Endpoint: /users/retornar-usuario --------------------------------------------------------------------------*/
     @Test
     public void userListById() throws IOException {
         UserDTO user = createUserFunction();
@@ -270,7 +259,7 @@ public class UserAceitacao {
         Assert.assertEquals(res.getIdUser(),user.getIdUser());
     }
 
-    /*UTILS-------------------------------------------------------------------------------------------------------------*/
+    /*UTILS--------------------------------------------------------------------------------------------------------*/
     public UserDTO createUserFunction() throws IOException {
         //Array de cargos
         String[] arrayRoles = {"AGILE_COACH", "ANALISTA_DE_DADOS", "ANALISTA_DE_RH", "ANALISTA_DE_TESTES", "ANALISTA_DE_SUPORTE",
@@ -282,7 +271,7 @@ public class UserAceitacao {
         JSONObject jsonObject = new JSONObject(jsonBody);
 
         //Definindo as values do json
-        jsonObject.put("userNamer", faker.name().fullName());
+        jsonObject.put("userName", faker.name().fullName());
         int randomIndex = random.nextInt(arrayRoles.length);
         jsonObject.put("userRole", arrayRoles[randomIndex]);
         jsonObject.put("email", faker.name().firstName().toLowerCase() + "@dbccompany.com.br");

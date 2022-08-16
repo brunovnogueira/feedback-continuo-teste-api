@@ -3,9 +3,14 @@ package aceitacao.service;
 import aceitacao.dto.UserDTO;
 import aceitacao.dto.UserListDTO;
 import aceitacao.dto.UserListIdDTO;
+import io.restassured.builder.RequestSpecBuilder;
+import io.restassured.config.EncoderConfig;
+import io.restassured.config.RestAssuredConfig;
 import io.restassured.http.ContentType;
 import io.restassured.http.Header;
 import io.restassured.response.ValidatableResponse;
+import io.restassured.specification.RequestSpecification;
+
 import java.io.File;
 import java.util.Random;
 
@@ -84,6 +89,7 @@ public class UserService {
         String url = baseUrl+"users/update-file";
         ValidatableResponse res = given()
                 .header(new Header("content-type", "multipart/form-data"))
+                .multiPart("file","empty")
                 .log().all()
                 .formParam("id",id)
         .when()
