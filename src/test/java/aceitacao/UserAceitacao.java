@@ -151,13 +151,13 @@ public class UserAceitacao {
         String jsonBody = lerJson("src/test/resources/user.json");
         JSONObject jsonObject = new JSONObject(jsonBody);
 
-        createUserDefault();
+        //createUserDefault();
 
         //Definindo as values do json
         jsonObject.put("name", faker.name().fullName());
         int randomIndex = random.nextInt(arrayRoles.length);
         jsonObject.put("userRole", arrayRoles[randomIndex]);
-        jsonObject.put("email", "testeLogin@email.com.br");
+        jsonObject.put("email", "testeLogin@dbccompany.com.br");
         jsonObject.put("userPassword", faker.internet().password(4, 16, true, true)+"#");
 
         ValidatableResponse res = userService.createBadRequest(jsonObject.toString());
