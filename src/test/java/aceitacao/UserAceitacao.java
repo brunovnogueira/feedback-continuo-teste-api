@@ -192,7 +192,7 @@ public class UserAceitacao {
         createUserDefault();
 
         //Definindo as values do json
-        jsonObject.put("login", "teste1@dbccompany.com.br");
+        jsonObject.put("login", "testeLogin@dbccompany.com.br");
         jsonObject.put("senha", "1234@a");
 
         ValidatableResponse res = userService.userLogin(jsonObject.toString());
@@ -259,6 +259,15 @@ public class UserAceitacao {
         Assert.assertEquals(res.getIdUser(),user.getIdUser());
     }
 
+    /* Endpoint: /users/recuperar-usuario-logado --------------------------------------------------------------------------*/
+    @Test
+    public void listLoggedUser() throws IOException {
+        ValidatableResponse res = userService.listLoggedUser();
+
+        //Validações
+        res.statusCode(HttpStatus.SC_OK);
+    }
+
     /*UTILS--------------------------------------------------------------------------------------------------------*/
     public UserDTO createUserFunction() throws IOException {
         //Array de cargos
@@ -292,7 +301,7 @@ public class UserAceitacao {
         JSONObject jsonObject = new JSONObject(jsonBody);
 
         //Definindo as values do json
-        jsonObject.put("userNamer", faker.name().fullName());
+        jsonObject.put("userName", faker.name().fullName());
         int randomIndex = random.nextInt(arrayRoles.length);
         jsonObject.put("userRole", arrayRoles[randomIndex]);
         jsonObject.put("email", "testeLogin@dbccompany.com.br");

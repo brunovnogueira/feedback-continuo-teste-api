@@ -21,7 +21,7 @@ public class UserService {
 
     String baseUrl = "https://feedback-continuo.herokuapp.com/";
 
-    String token = "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJmZWVkYmFjay1jb250aW51b3MtYXBpIiwianRpIjoxMTgsInJvbGVzIjpbIlJPTEVfVVNFUiJdLCJpYXQiOjE2NjA2NzIxMjIsImV4cCI6MTY2MDc1ODUyMn0.rwT1_X6XMQEiL2duFA0XgVGYjkcNwq7Vq2LLucONHlQ";
+    String token = "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJmZWVkYmFjay1jb250aW51b3MtYXBpIiwianRpIjoxMCwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlhdCI6MTY2MDY5NDM2OCwiZXhwIjoxNjYwNzgwNzY4fQ.eIy_YUX5jF-3ILlw7-wwR6FU5R6K2o-yI-vGGfdat9A";
 
     /*CREATE-------------------------------------------------------------------------------------------------------*/
     public UserDTO create(String jsonBody){
@@ -70,21 +70,6 @@ public class UserService {
         return res;
     }
 
-    public ValidatableResponse updateFileTxt(String id){
-        String url = baseUrl+"users/update-file";
-        ValidatableResponse res = given()
-                .header(new Header("content-type", "multipart/form-data"))
-                .multiPart(new File("src/test/resources/texto.txt"))
-                .log().all()
-                .formParam("id",id)
-        .when()
-                .put(url)
-        .then()
-                .log().all();
-
-        return res;
-    }
-
     public ValidatableResponse updateFileEmpty(String id){
         String url = baseUrl+"users/update-file";
         ValidatableResponse res = given()
@@ -100,6 +85,7 @@ public class UserService {
         return res;
     }
 
+    /*LOGIN-------------------------------------------------------------------------------------------------------*/
     public ValidatableResponse userLogin(String jsonBody){
         String url = baseUrl+"users/login";
         ValidatableResponse res = given()
@@ -115,6 +101,7 @@ public class UserService {
         return res;
     }
 
+    /*lIST ALL-------------------------------------------------------------------------------------------------------*/
     public UserListDTO[] listAll(){
         String url = baseUrl+"users/list-all";
         UserListDTO[] res = given()
@@ -132,6 +119,7 @@ public class UserService {
         return res;
     }
 
+    /*LIST BY ID-------------------------------------------------------------------------------------------------------*/
     public UserListIdDTO listUserById(String id){
         String url = baseUrl+"users/retornar-usuario?id={id}";
         UserListIdDTO res = given()
@@ -145,6 +133,22 @@ public class UserService {
                 .log().all()
                 .statusCode(200)
                 .extract().as(UserListIdDTO.class)
+                ;
+
+        return res;
+    }
+
+    public ValidatableResponse listLoggedUser(){
+        String url = baseUrl+"users/recuperar-usuario-logado";
+        ValidatableResponse res = given()
+                .contentType(ContentType.JSON)
+                .log().all()
+                .header("Authorization",token)
+                .when()
+                .get(url)
+                .then()
+                .log().all()
+
                 ;
 
         return res;
