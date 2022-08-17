@@ -15,13 +15,13 @@ import static io.restassured.RestAssured.given;
 public class UserService {
     Random random = new Random();
 
-    String baseUrl = "https://feedback-continuo.herokuapp.com/";
+    String baseUrl = "https://feedback-continuo.herokuapp.com";
 
     String token = "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJmZWVkYmFjay1jb250aW51b3MtYXBpIiwianRpIjo0Niwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlhdCI6MTY2MDc0MjMzMywiZXhwIjoxNjYwODI4NzMzfQ.9PLxoLM5gjULicN-cSwxolH0vbYGWFKColOPFpA7qQo";
 
     /*CREATE-------------------------------------------------------------------------------------------------------*/
     public UserDTO create(String jsonBody){
-        String url = baseUrl+"users/create";
+        String url = baseUrl+"/users/create";
         UserDTO res = given()
                 .contentType(ContentType.JSON)
                 .log().all()
@@ -37,7 +37,7 @@ public class UserService {
     }
 
     public ValidatableResponse createBadRequest(String jsonBody){
-        String url = baseUrl+"users/create";
+        String url = baseUrl+"/users/create";
          ValidatableResponse response = given()
                 .contentType(ContentType.JSON)
                 .log().all()
@@ -52,7 +52,7 @@ public class UserService {
 
     /*FILE UPDATE-------------------------------------------------------------------------------------------------------*/
     public ValidatableResponse updateFile(String id){
-        String url = baseUrl+"users/update-file";
+        String url = baseUrl+"/users/update-file";
         ValidatableResponse res = given()
                 .header(new Header("content-type", "multipart/form-data"))
                 .multiPart(new File("src/test/resources/images.png"))
@@ -67,7 +67,7 @@ public class UserService {
     }
 
     public ValidatableResponse updateFileEmpty(String id){
-        String url = baseUrl+"users/update-file";
+        String url = baseUrl+"/users/update-file";
         ValidatableResponse res = given()
                 .header(new Header("content-type", "multipart/form-data"))
                 .multiPart("file","empty")
@@ -83,7 +83,7 @@ public class UserService {
 
     /*LOGIN-------------------------------------------------------------------------------------------------------*/
     public Response userLogin(String jsonBody){
-        String url = baseUrl+"users/login";
+        String url = baseUrl+"/users/login";
         Response res = given()
                 .contentType(ContentType.JSON)
                 .log().all()
@@ -100,7 +100,7 @@ public class UserService {
 
     /*lIST ALL-------------------------------------------------------------------------------------------------------*/
     public UserListDTO[] listAll(){
-        String url = baseUrl+"users/list-all";
+        String url = baseUrl+"/users/list-all";
         UserListDTO[] res = given()
                 .contentType(ContentType.JSON)
                 .log().all()
@@ -118,7 +118,7 @@ public class UserService {
 
     /*LIST BY ID-------------------------------------------------------------------------------------------------------*/
     public UserListIdDTO listUserById(String id){
-        String url = baseUrl+"users/retornar-usuario?id={id}";
+        String url = baseUrl+"/users/retornar-usuario?id={id}";
         UserListIdDTO res = given()
                 .contentType(ContentType.JSON)
                 .log().all()
@@ -137,7 +137,7 @@ public class UserService {
 
     /*LOGGED USER-------------------------------------------------------------------------------------------------------*/
     public ValidatableResponse listLoggedUser(){
-        String url = baseUrl+"users/recuperar-usuario-logado";
+        String url = baseUrl+"/users/recuperar-usuario-logado";
         ValidatableResponse res = given()
                 .contentType(ContentType.JSON)
                 .log().all()

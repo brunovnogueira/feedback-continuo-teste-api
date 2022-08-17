@@ -141,6 +141,32 @@ public class UserAceitacao {
     }
 
     @Test
+    public void createEmailExiste() throws IOException {
+        //Array de cargos
+        String[] arrayRoles = {"AGILE_COACH", "ANALISTA_DE_DADOS", "ANALISTA_DE_RH", "ANALISTA_DE_TESTES", "ANALISTA_DE_SUPORTE",
+                "ARQUITETO_DE_SISTEMAS", "ASSISTENTE_COMERCIAL", "COORDENADOR_DE_DEPARTAMENTO_PESSOAL", "DESENVOLVEDOR_DE_SOFTWARE",
+                "ENGENHEIRO_DE_DADOS", "ENGENHEIRO_DE_SOFTWARE", "GERENTE_DE_PROJETOS", "LIDER_TECNICO", "UX_DESIGNER", "GERENTE_DE_SOLUCOES"};
+
+        //Criando um objeto json
+        String jsonBody = lerJson("src/test/resources/user.json");
+        JSONObject jsonObject = new JSONObject(jsonBody);
+
+        createUserDefault();
+
+        //Definindo as values do json
+        jsonObject.put("name", faker.name().fullName());
+        int randomIndex = random.nextInt(arrayRoles.length);
+        jsonObject.put("userRole", arrayRoles[randomIndex]);
+        jsonObject.put("email", "testeLogin@email.com.br");
+        jsonObject.put("userPassword", faker.internet().password(4, 16, true, true)+"#");
+
+        ValidatableResponse res = userService.createBadRequest(jsonObject.toString());
+
+        //Validações
+        res.statusCode(HttpStatus.SC_BAD_REQUEST);
+    }
+
+    @Test
     public void createSemSenha() throws IOException {
         //Array de cargos
         String[] arrayRoles = {"AGILE_COACH", "ANALISTA_DE_DADOS", "ANALISTA_DE_RH", "ANALISTA_DE_TESTES", "ANALISTA_DE_SUPORTE",
@@ -286,6 +312,27 @@ public class UserAceitacao {
         int randomIndex = random.nextInt(arrayRoles.length);
         jsonObject.put("userRole", arrayRoles[randomIndex]);
         jsonObject.put("email", faker.name().firstName().toLowerCase() + "@dbccompany.com.br");
+        jsonObject.put("userPassword", "1234@a");
+
+        UserDTO res = userService.create(jsonObject.toString());
+        return res;
+    }
+
+    public UserDTO createUserDefault() throws IOException {
+        //Array de cargos
+        String[] arrayRoles = {"AGILE_COACH", "ANALISTA_DE_DADOS", "ANALISTA_DE_RH", "ANALISTA_DE_TESTES", "ANALISTA_DE_SUPORTE",
+                "ARQUITETO_DE_SISTEMAS", "ASSISTENTE_COMERCIAL", "COORDENADOR_DE_DEPARTAMENTO_PESSOAL", "DESENVOLVEDOR_DE_SOFTWARE",
+                "ENGENHEIRO_DE_DADOS", "ENGENHEIRO_DE_SOFTWARE", "GERENTE_DE_PROJETOS", "LIDER_TECNICO", "UX_DESIGNER", "GERENTE_DE_SOLUCOES"};
+
+        //Criando um objeto json
+        String jsonBody = lerJson("src/test/resources/user.json");
+        JSONObject jsonObject = new JSONObject(jsonBody);
+
+        //Definindo as values do json
+        jsonObject.put("name", faker.name().fullName());
+        int randomIndex = random.nextInt(arrayRoles.length);
+        jsonObject.put("userRole", arrayRoles[randomIndex]);
+        jsonObject.put("email", "testeLogin@dbccompany.com.br");
         jsonObject.put("userPassword", "1234@a");
 
         UserDTO res = userService.create(jsonObject.toString());

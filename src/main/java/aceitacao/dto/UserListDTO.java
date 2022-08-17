@@ -6,6 +6,7 @@ import lombok.Data;
 @Data
 @JsonIgnoreProperties
 public class UserListDTO {
+    private String idUser;
     private String name;
     private String userRole;
     private String avatar;
