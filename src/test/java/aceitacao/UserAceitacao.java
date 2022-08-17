@@ -39,7 +39,7 @@ public class UserAceitacao {
         JSONObject jsonObject = new JSONObject(jsonBody);
 
         //Definindo as values do json
-        jsonObject.put("userName", faker.name().fullName());
+        jsonObject.put("name", faker.name().fullName());
         int randomIndex = random.nextInt(arrayRoles.length);
         jsonObject.put("userRole", arrayRoles[randomIndex]);
         jsonObject.put("email", faker.name().firstName().toLowerCase() + "@dbccompany.com.br");
@@ -49,6 +49,7 @@ public class UserAceitacao {
 
         //Validações
         Assert.assertFalse(res.getIdUser().isEmpty());
+        Assert.assertTrue(Integer.parseInt(res.getIdUser()) > 0);
     }
 
     @Test
@@ -58,7 +59,7 @@ public class UserAceitacao {
         JSONObject jsonObject = new JSONObject(jsonBody);
 
         //Definindo as values do json
-        jsonObject.put("userNamer", faker.name().fullName());
+        jsonObject.put("name", faker.name().fullName());
         jsonObject.put("email", faker.name().firstName().toLowerCase() + "@dbccompany.com.br");
         jsonObject.put("userPassword", faker.internet().password(4, 16, true, true));
 
@@ -103,7 +104,7 @@ public class UserAceitacao {
         JSONObject jsonObject = new JSONObject(jsonBody);
 
         //Definindo as values do json
-        jsonObject.put("userNamer", faker.name().fullName());
+        jsonObject.put("name", faker.name().fullName());
         int randomIndex = random.nextInt(arrayRoles.length);
         jsonObject.put("userRole", arrayRoles[randomIndex]);
         jsonObject.put("userPassword", faker.internet().password(4, 16, true, true));
@@ -126,7 +127,7 @@ public class UserAceitacao {
         JSONObject jsonObject = new JSONObject(jsonBody);
 
         //Definindo as values do json
-        jsonObject.put("userNamer", faker.name().fullName());
+        jsonObject.put("name", faker.name().fullName());
         int randomIndex = random.nextInt(arrayRoles.length);
         jsonObject.put("userRole", arrayRoles[randomIndex]);
         jsonObject.put("email", faker.name().firstName().toLowerCase() + "@email.com.br");
@@ -150,7 +151,7 @@ public class UserAceitacao {
         JSONObject jsonObject = new JSONObject(jsonBody);
 
         //Definindo as values do json
-        jsonObject.put("userNamer", faker.name().fullName());
+        jsonObject.put("name", faker.name().fullName());
         int randomIndex = random.nextInt(arrayRoles.length);
         jsonObject.put("userRole", arrayRoles[randomIndex]);
         jsonObject.put("email", faker.name().firstName().toLowerCase() + "@dbccompany.com.br");
@@ -280,7 +281,7 @@ public class UserAceitacao {
         JSONObject jsonObject = new JSONObject(jsonBody);
 
         //Definindo as values do json
-        jsonObject.put("userName", faker.name().fullName());
+        jsonObject.put("name", faker.name().fullName());
         int randomIndex = random.nextInt(arrayRoles.length);
         jsonObject.put("userRole", arrayRoles[randomIndex]);
         jsonObject.put("email", faker.name().firstName().toLowerCase() + "@dbccompany.com.br");
@@ -301,7 +302,7 @@ public class UserAceitacao {
         JSONObject jsonObject = new JSONObject(jsonBody);
 
         //Definindo as values do json
-        jsonObject.put("userName", faker.name().fullName());
+        jsonObject.put("name", faker.name().fullName());
         int randomIndex = random.nextInt(arrayRoles.length);
         jsonObject.put("userRole", arrayRoles[randomIndex]);
         jsonObject.put("email", "testeLogin@dbccompany.com.br");
