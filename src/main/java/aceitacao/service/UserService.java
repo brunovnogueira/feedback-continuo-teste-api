@@ -5,8 +5,8 @@ import aceitacao.dto.UserListDTO;
 import aceitacao.dto.UserListIdDTO;
 import io.restassured.http.ContentType;
 import io.restassured.http.Header;
+import io.restassured.response.Response;
 import io.restassured.response.ValidatableResponse;
-
 import java.io.File;
 import java.util.Random;
 
@@ -17,7 +17,7 @@ public class UserService {
 
     String baseUrl = "https://feedback-continuo.herokuapp.com/";
 
-    String token = "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJmZWVkYmFjay1jb250aW51b3MtYXBpIiwianRpIjoxMCwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlhdCI6MTY2MDY5NDM2OCwiZXhwIjoxNjYwNzgwNzY4fQ.eIy_YUX5jF-3ILlw7-wwR6FU5R6K2o-yI-vGGfdat9A";
+    String token = "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJmZWVkYmFjay1jb250aW51b3MtYXBpIiwianRpIjo0Niwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlhdCI6MTY2MDc0MjMzMywiZXhwIjoxNjYwODI4NzMzfQ.9PLxoLM5gjULicN-cSwxolH0vbYGWFKColOPFpA7qQo";
 
     /*CREATE-------------------------------------------------------------------------------------------------------*/
     public UserDTO create(String jsonBody){
@@ -82,9 +82,9 @@ public class UserService {
     }
 
     /*LOGIN-------------------------------------------------------------------------------------------------------*/
-    public ValidatableResponse userLogin(String jsonBody){
+    public Response userLogin(String jsonBody){
         String url = baseUrl+"users/login";
-        ValidatableResponse res = given()
+        Response res = given()
                 .contentType(ContentType.JSON)
                 .log().all()
                 .body(jsonBody)
@@ -92,6 +92,7 @@ public class UserService {
                 .post(url)
                 .then()
                 .log().all()
+                .extract().response()
                 ;
 
         return res;

@@ -6,6 +6,7 @@ import aceitacao.dto.UserListDTO;
 import aceitacao.dto.UserListIdDTO;
 import aceitacao.service.UserService;
 import com.github.javafaker.Faker;
+import io.restassured.response.Response;
 import io.restassured.response.ValidatableResponse;
 import org.apache.http.HttpStatus;
 import org.json.JSONObject;
@@ -190,16 +191,17 @@ public class UserAceitacao {
         String jsonBody = lerJson("src/test/resources/login.json");
         JSONObject jsonObject = new JSONObject(jsonBody);
 
-        createUserDefault();
+        UserDTO user = createUserFunction();
+        UserListIdDTO userInfo = listUser(user.getIdUser());
 
         //Definindo as values do json
-        jsonObject.put("login", "testeLogin@dbccompany.com.br");
+        jsonObject.put("login", userInfo.getEmail());
         jsonObject.put("senha", "1234@a");
 
-        ValidatableResponse res = userService.userLogin(jsonObject.toString());
+        Response res = userService.userLogin(jsonObject.toString());
 
         //Validações
-        res.statusCode(HttpStatus.SC_OK);
+        Assert.assertEquals(res.statusCode(),HttpStatus.SC_OK);
 
     }
 
@@ -209,16 +211,14 @@ public class UserAceitacao {
         String jsonBody = lerJson("src/test/resources/login.json");
         JSONObject jsonObject = new JSONObject(jsonBody);
 
-        //createUserDefault();
-
         //Definindo as values do json
-        jsonObject.put("login", "teste134@dbccompany.com.br");
+        jsonObject.put("login", "incorreto@dbccompany.com.br");
         jsonObject.put("senha", "1234@a");
 
-        ValidatableResponse res = userService.userLogin(jsonObject.toString());
+        Response res = userService.userLogin(jsonObject.toString());
 
         //Validações
-        res.statusCode(HttpStatus.SC_INTERNAL_SERVER_ERROR);
+        Assert.assertEquals(res.statusCode(),HttpStatus.SC_INTERNAL_SERVER_ERROR);
 
     }
 
@@ -228,16 +228,17 @@ public class UserAceitacao {
         String jsonBody = lerJson("src/test/resources/login.json");
         JSONObject jsonObject = new JSONObject(jsonBody);
 
-        //createUserDefault();
+        UserDTO user = createUserFunction();
+        UserListIdDTO userInfo = listUser(user.getIdUser());
 
         //Definindo as values do json
-        jsonObject.put("login", "testeLogin@dbccompany.com.br");
+        jsonObject.put("login", userInfo.getEmail());
         jsonObject.put("senha", "1234@b");
 
-        ValidatableResponse res = userService.userLogin(jsonObject.toString());
+        Response res = userService.userLogin(jsonObject.toString());
 
         //Validações
-        res.statusCode(HttpStatus.SC_INTERNAL_SERVER_ERROR);
+        Assert.assertEquals(res.statusCode(),HttpStatus.SC_INTERNAL_SERVER_ERROR);
 
     }
 
@@ -285,30 +286,33 @@ public class UserAceitacao {
         int randomIndex = random.nextInt(arrayRoles.length);
         jsonObject.put("userRole", arrayRoles[randomIndex]);
         jsonObject.put("email", faker.name().firstName().toLowerCase() + "@dbccompany.com.br");
-        jsonObject.put("userPassword", faker.internet().password(4, 16, true, true)+"#");
+        jsonObject.put("userPassword", "1234@a");
 
         UserDTO res = userService.create(jsonObject.toString());
         return res;
     }
 
-    public UserDTO createUserDefault() throws IOException {
-        //Array de cargos
-        String[] arrayRoles = {"AGILE_COACH", "ANALISTA_DE_DADOS", "ANALISTA_DE_RH", "ANALISTA_DE_TESTES", "ANALISTA_DE_SUPORTE",
-                "ARQUITETO_DE_SISTEMAS", "ASSISTENTE_COMERCIAL", "COORDENADOR_DE_DEPARTAMENTO_PESSOAL", "DESENVOLVEDOR_DE_SOFTWARE",
-                "ENGENHEIRO_DE_DADOS", "ENGENHEIRO_DE_SOFTWARE", "GERENTE_DE_PROJETOS", "LIDER_TECNICO", "UX_DESIGNER", "GERENTE_DE_SOLUCOES"};
+    public UserListIdDTO listUser(String id) throws IOException {
+        UserListIdDTO res = userService.listUserById(id);
+        return res;
+    }
 
+    public String authToken() throws IOException {
         //Criando um objeto json
-        String jsonBody = lerJson("src/test/resources/user.json");
+        String jsonBody = lerJson("src/test/resources/login.json");
         JSONObject jsonObject = new JSONObject(jsonBody);
 
-        //Definindo as values do json
-        jsonObject.put("name", faker.name().fullName());
-        int randomIndex = random.nextInt(arrayRoles.length);
-        jsonObject.put("userRole", arrayRoles[randomIndex]);
-        jsonObject.put("email", "testeLogin@dbccompany.com.br");
-        jsonObject.put("userPassword", "1234@a");
+        UserDTO user = createUserFunction();
+        UserListIdDTO userInfo = listUser(user.getIdUser());
 
-        UserDTO res = userService.create(jsonObject.toString());
-        return res;
+        //Definindo as values do json
+        jsonObject.put("login", userInfo.getEmail());
+        jsonObject.put("senha", "1234@a");
+
+        Response res = userService.userLogin(jsonObject.toString());
+
+        String token = res.getBody().toString();
+
+        return token;
     }
 }
