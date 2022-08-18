@@ -118,7 +118,7 @@ public class UserService {
 
     /*LIST BY ID-------------------------------------------------------------------------------------------------------*/
     public UserListIdDTO listUserById(String id){
-        String url = baseUrl+"/users/retornar-usuario?id={id}";
+        String url = baseUrl+"/users/recover-user?id={id}";
         UserListIdDTO res = given()
                 .contentType(ContentType.JSON)
                 .log().all()
@@ -137,7 +137,7 @@ public class UserService {
 
     /*LOGGED USER-------------------------------------------------------------------------------------------------------*/
     public ValidatableResponse listLoggedUser(){
-        String url = baseUrl+"/users/recuperar-usuario-logado";
+        String url = baseUrl+"/users/recover-logged-user";
         ValidatableResponse res = given()
                 .contentType(ContentType.JSON)
                 .log().all()
@@ -146,7 +146,22 @@ public class UserService {
                 .get(url)
                 .then()
                 .log().all()
+                ;
 
+        return res;
+    }
+
+    public ValidatableResponse deleteUser(String id){
+        String url = baseUrl+"/users/delete-user?id={id}";
+        ValidatableResponse res = given()
+                .contentType(ContentType.JSON)
+                .log().all()
+                .header("Authorization",token)
+                .pathParam("id",id)
+                .when()
+                .delete(url)
+                .then()
+                .log().all()
                 ;
 
         return res;

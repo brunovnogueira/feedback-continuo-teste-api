@@ -51,6 +51,8 @@ public class UserAceitacao {
         //Validações
         Assert.assertFalse(res.getIdUser().isEmpty());
         Assert.assertTrue(Integer.parseInt(res.getIdUser()) > 0);
+
+        delete(res.getIdUser());
     }
 
     @Test
@@ -151,7 +153,7 @@ public class UserAceitacao {
         String jsonBody = lerJson("src/test/resources/user.json");
         JSONObject jsonObject = new JSONObject(jsonBody);
 
-        //createUserDefault();
+        UserDTO user = createUserDefault();
 
         //Definindo as values do json
         jsonObject.put("name", faker.name().fullName());
@@ -164,6 +166,8 @@ public class UserAceitacao {
 
         //Validações
         res.statusCode(HttpStatus.SC_BAD_REQUEST);
+
+        delete(user.getIdUser());
     }
 
     @Test
@@ -198,6 +202,8 @@ public class UserAceitacao {
 
         //Validações
         res.statusCode(HttpStatus.SC_OK);
+
+        delete(user.getIdUser());
     }
 
     @Test
@@ -208,6 +214,8 @@ public class UserAceitacao {
 
         //Validações
         res.statusCode(HttpStatus.SC_OK);
+
+        delete(user.getIdUser());
     }
 
     /* Endpoint: /users/login --------------------------------------------------------------------------------- */
@@ -229,6 +237,7 @@ public class UserAceitacao {
         //Validações
         Assert.assertEquals(res.statusCode(),HttpStatus.SC_OK);
 
+        delete(user.getIdUser());
     }
 
     @Test
@@ -285,12 +294,25 @@ public class UserAceitacao {
 
         //Validações
         Assert.assertEquals(res.getIdUser(),user.getIdUser());
+
+        delete(user.getIdUser());
     }
 
     /* Endpoint: /users/recuperar-usuario-logado --------------------------------------------------------------------------*/
     @Test
     public void listLoggedUser() throws IOException {
         ValidatableResponse res = userService.listLoggedUser();
+
+        //Validações
+        res.statusCode(HttpStatus.SC_OK);
+    }
+
+    /* Endpoint: /users/delete-user --------------------------------------------------------------------------*/
+    @Test
+    public void deleteUser() throws IOException {
+        UserDTO user = createUserFunction();
+
+        ValidatableResponse res = userService.deleteUser(user.getIdUser());
 
         //Validações
         res.statusCode(HttpStatus.SC_OK);
@@ -342,6 +364,10 @@ public class UserAceitacao {
     public UserListIdDTO listUser(String id) throws IOException {
         UserListIdDTO res = userService.listUserById(id);
         return res;
+    }
+
+    public void delete(String userId) throws IOException {
+        ValidatableResponse res = userService.deleteUser(userId);
     }
 
     public String authToken() throws IOException {
