@@ -17,7 +17,7 @@ public class UserService {
 
     String baseUrl = "https://feedback-continuo.herokuapp.com";
 
-    String token = "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJmZWVkYmFjay1jb250aW51b3MtYXBpIiwianRpIjoxOCwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlhdCI6MTY2MDc1OTQwMCwiZXhwIjoxNjYwODQ1ODAwfQ.Pns2jpUSrOHCWKd2yDYzxRRYxu-UVTuqkyUyU9yKHAw";
+    String token = "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJmZWVkYmFjay1jb250aW51b3MtYXBpIiwianRpIjo5Mywicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlhdCI6MTY2MDkxODYzNiwiZXhwIjoxNjYxMDA1MDM2fQ.BKjee_WhN_dDQWkaFPfguX70goa-W5iDIAjYMrVSgSA";
 
     /*CREATE-------------------------------------------------------------------------------------------------------*/
     public UserDTO create(String jsonBody){
@@ -99,18 +99,20 @@ public class UserService {
     }
 
     /*lIST ALL-------------------------------------------------------------------------------------------------------*/
-    public UserListDTO[] listAll(){
-        String url = baseUrl+"/users/list-all";
-        UserListDTO[] res = given()
+    public UserListDTO listAll(String page, String register){
+        String url = baseUrl+"/users/list-all?page={page}&register={register}";
+        UserListDTO res = given()
                 .contentType(ContentType.JSON)
                 .log().all()
                 .header("Authorization",token)
+                .pathParam("page",page)
+                .pathParam("register",register)
                 .when()
                 .get(url)
                 .then()
                 .log().all()
                 .statusCode(200)
-                .extract().as(UserListDTO[].class)
+                .extract().as(UserListDTO.class)
                 ;
 
         return res;

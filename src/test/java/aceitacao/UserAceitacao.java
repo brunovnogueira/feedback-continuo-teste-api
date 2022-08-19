@@ -280,10 +280,12 @@ public class UserAceitacao {
     /* Endpoint: /users/list-all --------------------------------------------------------------------------------- */
     @Test
     public void userListAll(){
-        UserListDTO[] res = userService.listAll();
+        String page = "0";
+        String register = "5";
+        UserListDTO res = userService.listAll(page,register);
 
         //Validações
-        Assert.assertTrue(res.length > 0);
+        Assert.assertTrue(res.getContent().length > 0);
     }
 
     /* Endpoint: /users/retornar-usuario --------------------------------------------------------------------------*/
