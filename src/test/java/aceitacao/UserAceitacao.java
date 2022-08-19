@@ -1,9 +1,8 @@
 package aceitacao;
 
 
-import aceitacao.dto.UserDTO;
-import aceitacao.dto.UserListDTO;
-import aceitacao.dto.UserListIdDTO;
+import aceitacao.dto.user.UserDTO;
+import aceitacao.dto.user.UserListIdDTO;
 import aceitacao.service.UserService;
 import com.github.javafaker.Faker;
 import io.restassured.response.Response;
@@ -64,7 +63,7 @@ public class UserAceitacao {
         //Definindo as values do json
         jsonObject.put("name", faker.name().fullName());
         jsonObject.put("email", faker.name().firstName().toLowerCase() + "@dbccompany.com.br");
-        jsonObject.put("userPassword", faker.internet().password(4, 16, true, true));
+        jsonObject.put("userPassword", faker.internet().password(4, 16, true, true)+"#");
 
         ValidatableResponse res = userService.createBadRequest(jsonObject.toString());
 
@@ -87,7 +86,7 @@ public class UserAceitacao {
         int randomIndex = random.nextInt(arrayRoles.length);
         jsonObject.put("userRole", arrayRoles[randomIndex]);
         jsonObject.put("email", faker.name().firstName().toLowerCase() + "@dbccompany.com.br");
-        jsonObject.put("userPassword", faker.internet().password(4, 16, true, true));
+        jsonObject.put("userPassword", faker.internet().password(4, 16, true, true)+"#");
 
         ValidatableResponse res = userService.createBadRequest(jsonObject.toString());
 
@@ -110,7 +109,7 @@ public class UserAceitacao {
         jsonObject.put("name", faker.name().fullName());
         int randomIndex = random.nextInt(arrayRoles.length);
         jsonObject.put("userRole", arrayRoles[randomIndex]);
-        jsonObject.put("userPassword", faker.internet().password(4, 16, true, true));
+        jsonObject.put("userPassword", faker.internet().password(4, 16, true, true)+"#");
 
         ValidatableResponse res = userService.createBadRequest(jsonObject.toString());
 
@@ -280,12 +279,10 @@ public class UserAceitacao {
     /* Endpoint: /users/list-all --------------------------------------------------------------------------------- */
     @Test
     public void userListAll(){
-        String page = "0";
-        String register = "5";
-        UserListDTO res = userService.listAll(page,register);
+        UserListIdDTO[] res = userService.listAll();
 
         //Validações
-        Assert.assertTrue(res.getContent().length > 0);
+        Assert.assertTrue(res.length > 0);
     }
 
     /* Endpoint: /users/retornar-usuario --------------------------------------------------------------------------*/

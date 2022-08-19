@@ -1,10 +1,11 @@
-package aceitacao.dto;
+package aceitacao.dto.tag;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 @Data
 @JsonIgnoreProperties
-public class UserDTO {
-    private String idUser;
+public class TagDTO {
+    private String name;
+    private String idTag;
 }

@@ -1,4 +1,4 @@
-package aceitacao.dto;
+package aceitacao.dto.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;

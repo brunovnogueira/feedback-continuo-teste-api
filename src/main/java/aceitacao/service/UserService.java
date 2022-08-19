@@ -1,8 +1,8 @@
 package aceitacao.service;
 
-import aceitacao.dto.UserDTO;
-import aceitacao.dto.UserListDTO;
-import aceitacao.dto.UserListIdDTO;
+import aceitacao.dto.user.UserDTO;
+import aceitacao.dto.user.UserListDTO;
+import aceitacao.dto.user.UserListIdDTO;
 import io.restassured.http.ContentType;
 import io.restassured.http.Header;
 import io.restassured.response.Response;
@@ -15,9 +15,9 @@ import static io.restassured.RestAssured.given;
 public class UserService {
     Random random = new Random();
 
-    String baseUrl = "https://feedback-continuo.herokuapp.com";
+    String baseUrl = "https://feedback-continuos.herokuapp.com";
 
-    String token = "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJmZWVkYmFjay1jb250aW51b3MtYXBpIiwianRpIjo5Mywicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlhdCI6MTY2MDkxODYzNiwiZXhwIjoxNjYxMDA1MDM2fQ.BKjee_WhN_dDQWkaFPfguX70goa-W5iDIAjYMrVSgSA";
+    String token = "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJmZWVkYmFjay1jb250aW51b3MtYXBpIiwianRpIjoxMSwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlhdCI6MTY2MDkzNDAwNiwiZXhwIjoxNjYxMDIwNDA2fQ.oqLxpB_6UcQybhKYKXwWO5KOqk8paJ-mk_uhkiGyJGY";
 
     /*CREATE-------------------------------------------------------------------------------------------------------*/
     public UserDTO create(String jsonBody){
@@ -54,6 +54,7 @@ public class UserService {
     public ValidatableResponse updateFile(String id){
         String url = baseUrl+"/users/update-file";
         ValidatableResponse res = given()
+                .header("Authorization",token)
                 .header(new Header("content-type", "multipart/form-data"))
                 .multiPart(new File("src/test/resources/images.png"))
                 .log().all()
@@ -69,6 +70,7 @@ public class UserService {
     public ValidatableResponse updateFileEmpty(String id){
         String url = baseUrl+"/users/update-file";
         ValidatableResponse res = given()
+                .header("Authorization",token)
                 .header(new Header("content-type", "multipart/form-data"))
                 .multiPart("file","empty")
                 .log().all()
@@ -99,20 +101,18 @@ public class UserService {
     }
 
     /*lIST ALL-------------------------------------------------------------------------------------------------------*/
-    public UserListDTO listAll(String page, String register){
-        String url = baseUrl+"/users/list-all?page={page}&register={register}";
-        UserListDTO res = given()
+    public UserListIdDTO[] listAll(){
+        String url = baseUrl+"/users/list-all";
+        UserListIdDTO[] res = given()
                 .contentType(ContentType.JSON)
                 .log().all()
                 .header("Authorization",token)
-                .pathParam("page",page)
-                .pathParam("register",register)
                 .when()
                 .get(url)
                 .then()
                 .log().all()
                 .statusCode(200)
-                .extract().as(UserListDTO.class)
+                .extract().as(UserListIdDTO[].class)
                 ;
 
         return res;
@@ -120,7 +120,7 @@ public class UserService {
 
     /*LIST BY ID-------------------------------------------------------------------------------------------------------*/
     public UserListIdDTO listUserById(String id){
-        String url = baseUrl+"/users/recover-user?id={id}";
+        String url = baseUrl+"/users/recover-users?id={id}";
         UserListIdDTO res = given()
                 .contentType(ContentType.JSON)
                 .log().all()
