@@ -31,7 +31,7 @@ public class FeedbackAceitacao {
 
         jsonObject.put("message","Ótimo trabalho!");
         jsonObject.put("anonymous",true);
-        jsonObject.put("feedbackUserId","2");
+        jsonObject.put("feedbackUserId","1");
 
         ValidatableResponse res = feedbackService.createFeedback(jsonObject.toString());
 
@@ -63,7 +63,7 @@ public class FeedbackAceitacao {
 
         jsonObject.put("message","Ótimo trabalho!");
         jsonObject.put("anonymous",true);
-        jsonObject.put("feedbackUserId",2);
+        jsonObject.put("feedbackUserId","1");
 
         ValidatableResponse res = feedbackService.createFeedback(jsonObject.toString());
 
@@ -78,7 +78,7 @@ public class FeedbackAceitacao {
         JSONObject jsonObject = new JSONObject(jsonBody);
 
         jsonObject.put("anonymous",true);
-        jsonObject.put("feedbackUserId",2);
+        jsonObject.put("feedbackUserId","1");
 
         ValidatableResponse res = feedbackService.createFeedback(jsonObject.toString());
 
@@ -93,7 +93,7 @@ public class FeedbackAceitacao {
         JSONObject jsonObject = new JSONObject(jsonBody);
 
         jsonObject.put("message","Ótimo trabalho!");
-        jsonObject.put("feedbackUserId",2);
+        jsonObject.put("feedbackUserId","1");
 
         ValidatableResponse res = feedbackService.createFeedback(jsonObject.toString());
 
@@ -119,7 +119,7 @@ public class FeedbackAceitacao {
     /*Endpoint: /feedback?idFeedback={}&publico={} ------------------------------------------------------------------------------------*/
     @Test
     public void updateVisibility(){
-        ValidatableResponse res = feedbackService.updateVisibility("2",false);
+        ValidatableResponse res = feedbackService.updateVisibility("1",false);
 
         res.statusCode(HttpStatus.SC_OK);
 
