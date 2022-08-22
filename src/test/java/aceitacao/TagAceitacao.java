@@ -1,7 +1,6 @@
 package aceitacao;
 
 import aceitacao.dto.tag.TagDTO;
-import aceitacao.service.FeedbackService;
 import aceitacao.service.TagService;
 import org.testng.Assert;
 import org.testng.annotations.Test;

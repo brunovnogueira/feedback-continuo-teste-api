@@ -152,7 +152,7 @@ public class UserAceitacao {
         String jsonBody = lerJson("src/test/resources/user.json");
         JSONObject jsonObject = new JSONObject(jsonBody);
 
-        UserDTO user = createUserDefault();
+        //UserDTO user = createUserDefault();
 
         //Definindo as values do json
         jsonObject.put("name", faker.name().fullName());
@@ -166,7 +166,7 @@ public class UserAceitacao {
         //Validações
         res.statusCode(HttpStatus.SC_BAD_REQUEST);
 
-        delete(user.getIdUser());
+        //delete(user.getIdUser());
     }
 
     @Test

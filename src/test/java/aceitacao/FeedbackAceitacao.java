@@ -2,7 +2,6 @@ package aceitacao;
 
 import aceitacao.dto.feedback.FeedbackReceivedDTO;
 import aceitacao.dto.feedback.GivenDTO;
-import aceitacao.dto.user.UserDTO;
 import aceitacao.service.FeedbackService;
 import io.restassured.response.ValidatableResponse;
 import org.apache.http.HttpStatus;
@@ -13,7 +12,6 @@ import org.testng.annotations.Test;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Arrays;
 
 public class FeedbackAceitacao {
     public String lerJson(String caminhoJson) throws IOException {

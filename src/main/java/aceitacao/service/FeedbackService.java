@@ -10,7 +10,7 @@ import static io.restassured.RestAssured.given;
 public class FeedbackService {
     String baseUrl = "https://feedback-continuos.herokuapp.com";
 
-    String token = "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJmZWVkYmFjay1jb250aW51b3MtYXBpIiwianRpIjoyLCJyb2xlcyI6WyJST0xFX1VTRVIiXSwiaWF0IjoxNjYxMDk3OTc4LCJleHAiOjE2NjExODQzNzh9.KLmbimw52WpNKJ0BgsJBUbrluG-CWbOFm2A97y4h0FY";
+    String token = "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJmZWVkYmFjay1jb250aW51b3MtYXBpIiwianRpIjoyLCJyb2xlcyI6WyJST0xFX1VTRVIiXSwiaWF0IjoxNjYxMTg2OTcxLCJleHAiOjE2NjEyNzMzNzF9.XScX1MFKuCci06-YmfSKI6RNcrQ3u89EH4X6yoBuhdg";
 //    eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJmZWVkYmFjay1jb250aW51b3MtYXBpIiwianRpIjoxMSwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlhdCI6MTY2MDkzNDAwNiwiZXhwIjoxNjYxMDIwNDA2fQ.oqLxpB_6UcQybhKYKXwWO5KOqk8paJ-mk_uhkiGyJGY
     /*FEEDBACK-------------------------------------------------------------------------------------------------------*/
     public ValidatableResponse createFeedback(String jsonBody){

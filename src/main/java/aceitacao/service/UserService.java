@@ -1,12 +1,12 @@
 package aceitacao.service;
 
 import aceitacao.dto.user.UserDTO;
-import aceitacao.dto.user.UserListDTO;
 import aceitacao.dto.user.UserListIdDTO;
 import io.restassured.http.ContentType;
 import io.restassured.http.Header;
 import io.restassured.response.Response;
 import io.restassured.response.ValidatableResponse;
+
 import java.io.File;
 import java.util.Random;
 
@@ -17,7 +17,7 @@ public class UserService {
 
     String baseUrl = "https://feedback-continuos.herokuapp.com";
 
-    String token = "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJmZWVkYmFjay1jb250aW51b3MtYXBpIiwianRpIjoyLCJyb2xlcyI6WyJST0xFX1VTRVIiXSwiaWF0IjoxNjYxMDk3OTc4LCJleHAiOjE2NjExODQzNzh9.KLmbimw52WpNKJ0BgsJBUbrluG-CWbOFm2A97y4h0FY";
+    String token = "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJmZWVkYmFjay1jb250aW51b3MtYXBpIiwianRpIjoyLCJyb2xlcyI6WyJST0xFX1VTRVIiXSwiaWF0IjoxNjYxMTg2OTcxLCJleHAiOjE2NjEyNzMzNzF9.XScX1MFKuCci06-YmfSKI6RNcrQ3u89EH4X6yoBuhdg";
 
     /*CREATE-------------------------------------------------------------------------------------------------------*/
     public UserDTO create(String jsonBody){
